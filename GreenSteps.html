@@ -80,6 +80,12 @@
             overflow-y: auto;
         }
 
+        .content-with-nav {
+            padding: 20px 15px;
+            height: calc(100% - 200px);
+            overflow-y: auto;
+        }
+
         .welcome-content {
             text-align: center;
             padding: 40px 20px;
@@ -135,6 +141,12 @@
             margin-bottom: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             border-left: 5px solid #4CAF50;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .habit-card:hover {
+            transform: translateY(-2px);
         }
 
         .habit-header {
@@ -258,32 +270,45 @@
         }
 
         .navigation {
-            position: fixed;
-            bottom: 8px;
-            left: 50%;
-            transform: translateX(-50%);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: white;
+            border-top: 1px solid #ecf0f1;
             display: flex;
-            gap: 10px;
-            background: rgba(255,255,255,0.9);
-            padding: 10px;
-            border-radius: 25px;
-            backdrop-filter: blur(10px);
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 10px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
         }
 
         .nav-btn {
-            padding: 8px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 5px 8px;
             border: none;
-            border-radius: 15px;
-            background: #ecf0f1;
+            border-radius: 8px;
+            background: transparent;
             color: #7f8c8d;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 12px;
+            font-size: 9px;
+            min-width: 45px;
+            text-align: center;
         }
 
         .nav-btn.active {
-            background: #4CAF50;
-            color: white;
+            background: rgba(76, 175, 80, 0.1);
+            color: #4CAF50;
+        }
+
+        .nav-icon {
+            font-size: 18px;
+            margin-bottom: 2px;
         }
 
         .tip-card {
@@ -415,9 +440,9 @@
         }
 
         .floating-add {
-            position: fixed;
+            position: absolute;
             bottom: 80px;
-            right: 30px;
+            right: 20px;
             width: 56px;
             height: 56px;
             background: #4CAF50;
@@ -434,6 +459,49 @@
 
         .floating-add:hover {
             transform: scale(1.1);
+        }
+
+        .day-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .rank-badge {
+            width: 30px;
+            height: 30px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 12px;
+        }
+
+        .activity-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .impact-box {
+            background: #e8f5e8;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #2e7d32;
         }
     </style>
 </head>
@@ -522,7 +590,7 @@
                 <h1>GreenSteps</h1>
                 <p>Your daily eco-impact tracker</p>
             </div>
-            <div class="content">
+            <div class="content-with-nav">
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-number">127</div>
@@ -587,6 +655,30 @@
                 </div>
             </div>
             <div class="floating-add" onclick="showScreen(7)">+</div>
+            
+            <!-- Navigation -->
+            <div class="navigation">
+                <button class="nav-btn active" onclick="showScreen(5)">
+                    <div class="nav-icon">🏠</div>
+                    <div>Home</div>
+                </button>
+                <button class="nav-btn" onclick="showScreen(6)">
+                    <div class="nav-icon">💡</div>
+                    <div>Tips</div>
+                </button>
+                <button class="nav-btn" onclick="showScreen(8)">
+                    <div class="nav-icon">📊</div>
+                    <div>Progress</div>
+                </button>
+                <button class="nav-btn" onclick="showScreen(9)">
+                    <div class="nav-icon">👥</div>
+                    <div>Community</div>
+                </button>
+                <button class="nav-btn" onclick="showScreen(10)">
+                    <div class="nav-icon">👤</div>
+                    <div>Profile</div>
+                </button>
+            </div>
         </div>
 
         <!-- Screen 6: Tips & Education -->
@@ -599,7 +691,7 @@
                 <h1>Eco Tips</h1>
                 <p>Learn sustainable living tips</p>
             </div>
-            <div class="content">
+            <div class="content-with-nav">
                 <div class="tip-card">
                     <div class="tip-title">💡 Quick Tip: Energy Saving</div>
                     <div class="tip-text">Unplug electronics when not in use. Even in standby mode, devices consume energy. This simple habit can reduce your electricity bill by 5-10%.</div>
@@ -625,6 +717,30 @@
                     <div class="tip-text">Combine trips and errands. Planning efficient routes can reduce your carbon footprint and save time and money.</div>
                 </div>
             </div>
+            
+            <!-- Navigation -->
+            <div class="navigation">
+                <button class="nav-btn" onclick="showScreen(5)">
+                    <div class="nav-icon">🏠</div>
+                    <div>Home</div>
+                </button>
+                <button class="nav-btn active" onclick="showScreen(6)">
+                    <div class="nav-icon">💡</div>
+                    <div>Tips</div>
+                </button>
+                <button class="nav-btn" onclick="showScreen(8)">
+                    <div class="nav-icon">📊</div>
+                    <div>Progress</div>
+                </button>
+                <button class="nav-btn" onclick="showScreen(9)">
+                    <div class="nav-icon">👥</div>
+                    <div>Community</div>
+                </button>
+                <button class="nav-btn" onclick="showScreen(10)">
+                    <div class="nav-icon">👤</div>
+                    <div>Profile</div>
+                </button>
+            </div>
         </div>
 
         <!-- Screen 7: Add New Habit -->
@@ -637,14 +753,14 @@
                 <h1>Add New Habit</h1>
                 <p>Choose your next green challenge</p>
             </div>
-            <div class="content">
+            <div class="content-with-nav">
                 <div class="habit-card" onclick="selectHabit(this)">
                     <div class="habit-header">
                         <div class="habit-title">🥤 Avoid Single-Use Cups</div>
                         <div class="points">+8 pts</div>
                     </div>
                     <div class="habit-desc">Bring your own cup for coffee/tea purchases</div>
-                    <div style="background: #e8f5e8; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 12px; color: #2e7d32;">
+                    <div class="impact-box">
                         Impact: Saves 1 plastic cup daily = 365 cups/year
                     </div>
                 </div>
@@ -655,7 +771,7 @@
                         <div class="points">+20 pts</div>
                     </div>
                     <div class="habit-desc">Choose one plant-based meal today</div>
-                    <div style="background: #e8f5e8; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 12px; color: #2e7d32;">
+                    <div class="impact-box">
                         Impact: Reduces CO₂ by 0.8kg per meal
                     </div>
                 </div>
@@ -666,7 +782,7 @@
                         <div class="points">+15 pts</div>
                     </div>
                     <div class="habit-desc">Replace one bulb with LED today</div>
-                    <div style="background: #e8f5e8; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 12px; color: #2e7d32;">
+                    <div class="impact-box">
                         Impact: Saves 75% energy compared to incandescent
                     </div>
                 </div>
@@ -677,10 +793,34 @@
                         <div class="points">+12 pts</div>
                     </div>
                     <div class="habit-desc">Walk or bike for trips under 1km</div>
-                    <div style="background: #e8f5e8; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 12px; color: #2e7d32;">
+                    <div class="impact-box">
                         Impact: Zero emissions + health benefits
                     </div>
                 </div>
+            </div>
+            
+            <!-- Navigation -->
+            <div class="navigation">
+                <button class="nav-btn" onclick="showScreen(5)">
+                    <div class="nav-icon">🏠</div>
+                    <div>Home</div>
+                </button>
+                <button class="nav-btn" onclick="showScreen(6)">
+                    <div class="nav-icon">💡</div>
+                    <div>Tips</div>
+                </button>
+                <button class="nav-btn" onclick="showScreen(8)">
+                    <div class="nav-icon">📊</div>
+                    <div>Progress</div>
+                </button>
+                <button class="nav-btn" onclick="showScreen(9)">
+                    <div class="nav-icon">👥</div>
+                    <div>Community</div>
+                </button>
+                <button class="nav-btn" onclick="showScreen(10)">
+                    <div class="nav-icon">👤</div>
+                    <div>Profile</div>
+                </button>
             </div>
         </div>
 
@@ -694,7 +834,7 @@
                 <h1>Weekly Progress</h1>
                 <p>Your eco-impact this week</p>
             </div>
-            <div class="content">
+            <div class="content-with-nav">
                 <div class="impact-section">
                     <div class="impact-title">This Week's Impact</div>
                     <div class="impact-value">12.4 kg</div>
@@ -714,7 +854,7 @@
 
                 <h3 style="margin: 20px 0 15px; color: #2c3e50;">Daily Breakdown</h3>
                 
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: white; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                <div class="day-item">
                     <div>
                         <div style="font-weight: bold; color: #2c3e50;">Monday</div>
                         <div style="font-size: 12px; color: #7f8c8d;">3/3 habits completed</div>
@@ -722,7 +862,7 @@
                     <div style="color: #4CAF50; font-size: 18px;">✓</div>
                 </div>
 
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: white; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                <div class="day-item">
                     <div>
                         <div style="font-weight: bold; color: #2c3e50;">Tuesday</div>
                         <div style="font-size: 12px; color: #7f8c8d;">2/3 habits completed</div>
@@ -730,7 +870,7 @@
                     <div style="color: #ff9800; font-size: 18px;">○</div>
                 </div>
 
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: white; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                <div class="day-item">
                     <div>
                         <div style="font-weight: bold; color: #2c3e50;">Wednesday</div>
                         <div style="font-size: 12px; color: #7f8c8d;">3/3 habits completed</div>
@@ -747,6 +887,30 @@
                     <div style="font-size: 12px;">17/20 completed</div>
                 </div>
             </div>
+            
+            <!-- Navigation -->
+            <div class="navigation">
+                <button class="nav-btn" onclick="showScreen(5)">
+                    <div class="nav-icon">🏠</div>
+                    <div>Home</div>
+                </button>
+                <button class="nav-btn" onclick="showScreen(6)">
+                    <div class="nav-icon">💡</div>
+                    <div>Tips</div>
+                </button>
+                <button class="nav-btn active" onclick="showScreen(8)">
+                    <div class="nav-icon">📊</div>
+                    <div>Progress</div>
+                </button>
+                <button class="nav-btn" onclick="showScreen(9)">
+                    <div class="nav-icon">👥</div>
+                    <div>Community</div>
+                </button>
+                <button class="nav-btn" onclick="showScreen(10)">
+                    <div class="nav-icon">👤</div>
+                    <div>Profile</div>
+                </button>
+            </div>
         </div>
 
         <!-- Screen 9: Community/Social -->
@@ -759,12 +923,12 @@
                 <h1>Community</h1>
                 <p>Connect with eco-warriors</p>
             </div>
-            <div class="content">
+            <div class="content-with-nav">
                 <div style="background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
                     <h3 style="color: #2c3e50; margin-bottom: 15px;">🏆 Leaderboard</h3>
                     
-                    <div style="display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #ecf0f1;">
-                        <div style="width: 30px; height: 30px; background: #FFD700; border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 12px;">1</div>
+                    <div class="leaderboard-item">
+                        <div class="rank-badge" style="background: #FFD700;">1</div>
                         <div style="flex: 1;">
                             <div style="font-weight: bold; color: #2c3e50;">EcoSarah</div>
                             <div style="font-size: 12px; color: #7f8c8d;">1,450 points</div>
@@ -772,24 +936,24 @@
                         <div style="color: #4CAF50;">👑</div>
                     </div>
 
-                    <div style="display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #ecf0f1;">
-                        <div style="width: 30px; height: 30px; background: #C0C0C0; border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 12px;">2</div>
+                    <div class="leaderboard-item">
+                        <div class="rank-badge" style="background: #C0C0C0;">2</div>
                         <div style="flex: 1;">
                             <div style="font-weight: bold; color: #2c3e50;">GreenGuru</div>
                             <div style="font-size: 12px; color: #7f8c8d;">1,320 points</div>
                         </div>
                     </div>
 
-                    <div style="display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #ecf0f1;">
-                        <div style="width: 30px; height: 30px; background: #CD7F32; border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 12px;">3</div>
+                    <div class="leaderboard-item">
+                        <div class="rank-badge" style="background: #CD7F32;">3</div>
                         <div style="flex: 1;">
                             <div style="font-weight: bold; color: #2c3e50;">ClimateChamp</div>
                             <div style="font-size: 12px; color: #7f8c8d;">1,280 points</div>
                         </div>
                     </div>
 
-                    <div style="display: flex; align-items: center; padding: 10px 0; background: #f8f9fa; border-radius: 8px; margin-top: 10px;">
-                        <div style="width: 30px; height: 30px; background: #4CAF50; border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 12px; color: white;">5</div>
+                    <div class="leaderboard-item" style="background: #f8f9fa; border-radius: 8px; margin-top: 10px;">
+                        <div class="rank-badge" style="background: #4CAF50; color: white;">5</div>
                         <div style="flex: 1;">
                             <div style="font-weight: bold; color: #2c3e50;">You (Alex Green)</div>
                             <div style="font-size: 12px; color: #7f8c8d;">1,247 points</div>
@@ -810,12 +974,12 @@
                 <div style="background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
                     <h3 style="color: #2c3e50; margin-bottom: 15px;">💬 Recent Activity</h3>
                     
-                    <div style="padding: 10px 0; border-bottom: 1px solid #ecf0f1;">
+                    <div class="activity-item">
                         <div style="font-weight: bold; color: #2c3e50; font-size: 14px;">EcoSarah completed "Bike to Work" 🚲</div>
                         <div style="font-size: 12px; color: #7f8c8d;">2 hours ago</div>
                     </div>
 
-                    <div style="padding: 10px 0; border-bottom: 1px solid #ecf0f1;">
+                    <div class="activity-item">
                         <div style="font-weight: bold; color: #2c3e50; font-size: 14px;">GreenGuru shared a tip about composting 🌱</div>
                         <div style="font-size: 12px; color: #7f8c8d;">4 hours ago</div>
                     </div>
@@ -825,6 +989,30 @@
                         <div style="font-size: 12px; color: #7f8c8d;">6 hours ago</div>
                     </div>
                 </div>
+            </div>
+            
+            <!-- Navigation -->
+            <div class="navigation">
+                <button class="nav-btn" onclick="showScreen(5)">
+                    <div class="nav-icon">🏠</div>
+                    <div>Home</div>
+                </button>
+                <button class="nav-btn" onclick="showScreen(6)">
+                    <div class="nav-icon">💡</div>
+                    <div>Tips</div>
+                </button>
+                <button class="nav-btn" onclick="showScreen(8)">
+                    <div class="nav-icon">📊</div>
+                    <div>Progress</div>
+                </button>
+                <button class="nav-btn active" onclick="showScreen(9)">
+                    <div class="nav-icon">👥</div>
+                    <div>Community</div>
+                </button>
+                <button class="nav-btn" onclick="showScreen(10)">
+                    <div class="nav-icon">👤</div>
+                    <div>Profile</div>
+                </button>
             </div>
         </div>
 
@@ -838,7 +1026,7 @@
                 <h1>Your Profile</h1>
                 <p>Track your green journey</p>
             </div>
-            <div class="content">
+            <div class="content-with-nav">
                 <div class="profile-section">
                     <div class="profile-pic">🌟</div>
                     <div class="level-badge">Level 3 - Eco Enthusiast</div>
@@ -893,15 +1081,30 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Navigation -->
-        <div class="navigation">
-            <button class="nav-btn active" onclick="showScreen(5)">Home</button>
-            <button class="nav-btn" onclick="showScreen(6)">Tips</button>
-            <button class="nav-btn" onclick="showScreen(8)">Progress</button>
-            <button class="nav-btn" onclick="showScreen(9)">Community</button>
-            <button class="nav-btn" onclick="showScreen(10)">Profile</button>
+            
+            <!-- Navigation -->
+            <div class="navigation">
+                <button class="nav-btn" onclick="showScreen(5)">
+                    <div class="nav-icon">🏠</div>
+                    <div>Home</div>
+                </button>
+                <button class="nav-btn" onclick="showScreen(6)">
+                    <div class="nav-icon">💡</div>
+                    <div>Tips</div>
+                </button>
+                <button class="nav-btn" onclick="showScreen(8)">
+                    <div class="nav-icon">📊</div>
+                    <div>Progress</div>
+                </button>
+                <button class="nav-btn" onclick="showScreen(9)">
+                    <div class="nav-icon">👥</div>
+                    <div>Community</div>
+                </button>
+                <button class="nav-btn active" onclick="showScreen(10)">
+                    <div class="nav-icon">👤</div>
+                    <div>Profile</div>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -909,79 +1112,118 @@
         let currentScreen = 1;
 
         function showScreen(screenNumber) {
-            // Hide all screens
-            document.querySelectorAll('.screen').forEach(screen => {
-                screen.classList.remove('active');
-            });
-            
-            // Show selected screen
-            document.getElementById(`screen${screenNumber}`).classList.add('active');
-            currentScreen = screenNumber;
-
-            // Update navigation highlighting
-            if (screenNumber >= 5) {
-                document.querySelectorAll('.nav-btn').forEach(btn => {
-                    btn.classList.remove('active');
+            try {
+                // Hide all screens
+                const screens = document.querySelectorAll('.screen');
+                screens.forEach(screen => {
+                    screen.classList.remove('active');
                 });
                 
-                if (screenNumber === 5) {
-                    document.querySelector('.nav-btn:nth-child(1)').classList.add('active');
-                } else if (screenNumber === 6) {
-                    document.querySelector('.nav-btn:nth-child(2)').classList.add('active');
-                } else if (screenNumber === 8) {
-                    document.querySelector('.nav-btn:nth-child(3)').classList.add('active');
-                } else if (screenNumber === 9) {
-                    document.querySelector('.nav-btn:nth-child(4)').classList.add('active');
-                } else if (screenNumber === 10) {
-                    document.querySelector('.nav-btn:nth-child(5)').classList.add('active');
+                // Show selected screen
+                const targetScreen = document.getElementById('screen' + screenNumber);
+                if (targetScreen) {
+                    targetScreen.classList.add('active');
+                    currentScreen = screenNumber;
+
+                    // Update navigation highlighting for main app screens (5-10)
+                    if (screenNumber >= 5 && screenNumber <= 10) {
+                        updateNavigation(screenNumber);
+                    }
                 }
+            } catch (error) {
+                console.error('Error showing screen:', error);
+            }
+        }
+
+        function updateNavigation(screenNumber) {
+            try {
+                // Get all navigation buttons in the current screen
+                const currentScreenElement = document.getElementById('screen' + screenNumber);
+                if (currentScreenElement) {
+                    const navBtns = currentScreenElement.querySelectorAll('.nav-btn');
+                    
+                    // Remove active class from all nav buttons
+                    navBtns.forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Add active class to appropriate button
+                    let activeIndex = 0;
+                    switch (screenNumber) {
+                        case 5: activeIndex = 0; break; // Home
+                        case 6: activeIndex = 1; break; // Tips
+                        case 8: activeIndex = 2; break; // Progress
+                        case 9: activeIndex = 3; break; // Community
+                        case 10: activeIndex = 4; break; // Profile
+                    }
+                    
+                    if (navBtns[activeIndex]) {
+                        navBtns[activeIndex].classList.add('active');
+                    }
+                }
+            } catch (error) {
+                console.error('Error updating navigation:', error);
             }
         }
 
         function selectHabit(habitCard) {
-            // Visual feedback for selection
-            habitCard.style.background = 'linear-gradient(135deg, #e8f5e8, #c8e6c9)';
-            habitCard.style.transform = 'scale(0.98)';
-            
-            setTimeout(() => {
-                habitCard.style.transform = 'scale(1)';
-                // Show confirmation and redirect to home
-                alert('Habit added successfully! 🎉');
-                showScreen(5);
-                // Reset background after returning to home
+            try {
+                // Visual feedback for selection
+                habitCard.style.background = 'linear-gradient(135deg, #e8f5e8, #c8e6c9)';
+                habitCard.style.transform = 'scale(0.98)';
+                
                 setTimeout(() => {
-                    habitCard.style.background = 'white';
-                }, 500);
-            }, 200);
+                    habitCard.style.transform = 'scale(1)';
+                    // Show confirmation and redirect to home
+                    alert('Habit added successfully! 🎉');
+                    showScreen(5);
+                    // Reset background after returning to home
+                    setTimeout(() => {
+                        habitCard.style.background = 'white';
+                    }, 500);
+                }, 200);
+            } catch (error) {
+                console.error('Error selecting habit:', error);
+            }
         }
 
         function completeHabit(button) {
-            const habitCard = button.closest('.habit-card');
-            const progressBar = habitCard.querySelector('.progress-fill');
-            const actions = habitCard.querySelector('.habit-actions');
-            
-            // Animate progress bar
-            progressBar.style.width = '100%';
-            
-            // Update button
-            setTimeout(() => {
-                actions.innerHTML = '<button class="btn-small btn-done">✓ Completed</button>';
+            try {
+                const habitCard = button.closest('.habit-card');
+                const progressBar = habitCard.querySelector('.progress-fill');
+                const actions = habitCard.querySelector('.habit-actions');
                 
-                // Update stats (simulate)
-                const pointsEl = document.querySelector('.stat-number');
-                let currentPoints = parseInt(pointsEl.textContent);
-                pointsEl.textContent = currentPoints + 15;
-            }, 500);
+                // Animate progress bar
+                if (progressBar) {
+                    progressBar.style.width = '100%';
+                }
+                
+                // Update button
+                setTimeout(() => {
+                    if (actions) {
+                        actions.innerHTML = '<button class="btn-small btn-done">✓ Completed</button>';
+                    }
+                    
+                    // Update stats (simulate)
+                    const pointsEl = document.querySelector('.stat-number');
+                    if (pointsEl) {
+                        let currentPoints = parseInt(pointsEl.textContent) || 0;
+                        pointsEl.textContent = currentPoints + 15;
+                    }
+                }, 500);
+            } catch (error) {
+                console.error('Error completing habit:', error);
+            }
         }
 
-        // Auto-advance through onboarding screens (for demo)
-        if (currentScreen <= 4) {
-            setInterval(() => {
-                if (currentScreen <= 4) {
-                    showScreen(currentScreen + 1);
-                }
-            }, 3000);
-        }
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                showScreen(1);
+            } catch (error) {
+                console.error('Error initializing app:', error);
+            }
+        });
     </script>
 </body>
 </html>
