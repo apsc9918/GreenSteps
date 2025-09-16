@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenSteps - Mobile App Prototype</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .phone-container {
+            width: 320px;
+            height: 640px;
+            background: #000;
+            border-radius: 30px;
+            padding: 8px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 22px;
+            overflow: hidden;
+            position: relative;
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .status-bar {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 20px 15px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 20px 15px;
+            height: calc(100% - 140px);
+            overflow-y: auto;
+        }
+
+        .welcome-content {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            border-radius: 60px;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+        }
+
+        .welcome-text h2 {
+            font-size: 26px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .welcome-text p {
+            font-size: 16px;
+            color: #7f8c8d;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .habit-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid #4CAF50;
+        }
+
+        .habit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .habit-title {
+            font-size: 18px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .points {
+            background: #4CAF50;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .habit-desc {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            background: #ecf0f1;
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .habit-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-small {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 15px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .btn-done {
+            background: #27ae60;
+        }
+
+        .btn-skip {
+            background: #95a5a6;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .impact-section {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .impact-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .impact-value {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .impact-desc {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            background: rgba(255,255,255,0.9);
+            padding: 10px;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 15px;
+            background: #ecf0f1;
+            color: #7f8c8d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 12px;
+        }
+
+        .nav-btn.active {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .tip-card {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border-left: 5px solid #2196F3;
+        }
+
+        .tip-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1565c0;
+            margin-bottom: 10px;
+        }
+
+        .tip-text {
+            font-size: 14px;
+            color: #424242;
+            line-height: 1.4;
+        }
+
+        .profile-section {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .profile-pic {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            border-radius: 40px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: white;
+        }
+
+        .level-badge {
+            background: #ff9800;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .achievement {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .achievement-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .achievement-name {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        .onboarding-step {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .step-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            border-radius: 50px;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+        }
+
+        .step-title {
+            font-size: 22px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .step-desc {
+            font-size: 16px;
+            color: #7f8c8d;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        .progress-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 6px;
+            background: #ecf0f1;
+        }
+
+        .dot.active {
+            background: #4CAF50;
+        }
+
+        .floating-add {
+            position: fixed;
+            bottom: 80px;
+            right: 30px;
+            width: 56px;
+            height: 56px;
+            background: #4CAF50;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .floating-add:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Screen 1: Welcome/Splash -->
+    <div class="phone-container">
+        <div class="screen active" id="screen1">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>🔋 89%</span>
+            </div>
+            <div class="welcome-content">
+                <div class="logo">🌱</div>
+                <div class="welcome-text">
+                    <h2>Welcome to GreenSteps</h2>
+                    <p>Start your journey to a more sustainable lifestyle. Track daily eco-friendly habits and see your positive impact on the planet.</p>
+                    <button class="btn" onclick="showScreen(2)">Get Started</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 2: Onboarding 1 -->
+        <div class="screen" id="screen2">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>🔋 89%</span>
+            </div>
+            <div class="onboarding-step">
+                <div class="step-icon">📊</div>
+                <h2 class="step-title">Track Your Impact</h2>
+                <p class="step-desc">Monitor your daily eco-friendly activities and see how much carbon, water, and waste you're saving.</p>
+                <div class="progress-dots">
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+                <button class="btn" onclick="showScreen(3)">Next</button>
+            </div>
+        </div>
+
+        <!-- Screen 3: Onboarding 2 -->
+        <div class="screen" id="screen3">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>🔋 89%</span>
+            </div>
+            <div class="onboarding-step">
+                <div class="step-icon">🎯</div>
+                <h2 class="step-title">Build Green Habits</h2>
+                <p class="step-desc">Choose from personalized eco-challenges and build sustainable habits one step at a time.</p>
+                <div class="progress-dots">
+                    <div class="dot"></div>
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                </div>
+                <button class="btn" onclick="showScreen(4)">Next</button>
+            </div>
+        </div>
+
+        <!-- Screen 4: Onboarding 3 -->
+        <div class="screen" id="screen4">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>🔋 89%</span>
+            </div>
+            <div class="onboarding-step">
+                <div class="step-icon">🏆</div>
+                <h2 class="step-title">Earn Rewards</h2>
+                <p class="step-desc">Unlock achievements, level up your eco-warrior status, and compete with friends for a greener planet.</p>
+                <div class="progress-dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot active"></div>
+                </div>
+                <button class="btn" onclick="showScreen(5)">Start My Journey</button>
+            </div>
+        </div>
+
+        <!-- Screen 5: Dashboard/Home -->
+        <div class="screen" id="screen5">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>🔋 89%</span>
+            </div>
+            <div class="header">
+                <h1>GreenSteps</h1>
+                <p>Your daily eco-impact tracker</p>
+            </div>
+            <div class="content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">127</div>
+                        <div class="stat-label">Green Points</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">12</div>
+                        <div class="stat-label">Day Streak</div>
+                    </div>
+                </div>
+
+                <div class="impact-section">
+                    <div class="impact-title">Today's Impact</div>
+                    <div class="impact-value">2.3 kg</div>
+                    <div class="impact-desc">CO₂ saved this month</div>
+                </div>
+
+                <h3 style="margin-bottom: 15px; color: #2c3e50;">Today's Habits</h3>
+                
+                <div class="habit-card">
+                    <div class="habit-header">
+                        <div class="habit-title">Use Reusable Water Bottle</div>
+                        <div class="points">+10 pts</div>
+                    </div>
+                    <div class="habit-desc">Replace single-use plastic bottles today</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 100%"></div>
+                    </div>
+                    <div class="habit-actions">
+                        <button class="btn-small btn-done">✓ Completed</button>
+                    </div>
+                </div>
+
+                <div class="habit-card">
+                    <div class="habit-header">
+                        <div class="habit-title">Take Public Transport</div>
+                        <div class="points">+15 pts</div>
+                    </div>
+                    <div class="habit-desc">Choose bus, train, or bike over car</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                    <div class="habit-actions">
+                        <button class="btn-small" onclick="completeHabit(this)">Mark Done</button>
+                        <button class="btn-small btn-skip">Skip Today</button>
+                    </div>
+                </div>
+
+                <div class="habit-card">
+                    <div class="habit-header">
+                        <div class="habit-title">Reduce Food Waste</div>
+                        <div class="points">+12 pts</div>
+                    </div>
+                    <div class="habit-desc">Plan meals and use leftovers creatively</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                    <div class="habit-actions">
+                        <button class="btn-small" onclick="completeHabit(this)">Mark Done</button>
+                        <button class="btn-small btn-skip">Skip Today</button>
+                    </div>
+                </div>
+            </div>
+            <div class="floating-add" onclick="showScreen(7)">+</div>
+        </div>
+
+        <!-- Screen 6: Tips & Education -->
+        <div class="screen" id="screen6">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>🔋 89%</span>
+            </div>
+            <div class="header">
+                <h1>Eco Tips</h1>
+                <p>Learn sustainable living tips</p>
+            </div>
+            <div class="content">
+                <div class="tip-card">
+                    <div class="tip-title">💡 Quick Tip: Energy Saving</div>
+                    <div class="tip-text">Unplug electronics when not in use. Even in standby mode, devices consume energy. This simple habit can reduce your electricity bill by 5-10%.</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-title">🚿 Water Conservation</div>
+                    <div class="tip-text">Take shorter showers! Reducing your shower time by just 2 minutes can save up to 1,500 gallons of water per year.</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-title">🍽️ Food Waste Prevention</div>
+                    <div class="tip-text">Plan your meals ahead and store food properly. About 30% of food is wasted globally - you can make a difference!</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-title">♻️ Smart Recycling</div>
+                    <div class="tip-text">Clean containers before recycling. Contaminated recyclables often end up in landfills instead of being processed.</div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-title">🌱 Green Transportation</div>
+                    <div class="tip-text">Combine trips and errands. Planning efficient routes can reduce your carbon footprint and save time and money.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 7: Add New Habit -->
+        <div class="screen" id="screen7">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>🔋 89%</span>
+            </div>
+            <div class="header">
+                <h1>Add New Habit</h1>
+                <p>Choose your next green challenge</p>
+            </div>
+            <div class="content">
+                <div class="habit-card" onclick="selectHabit(this)">
+                    <div class="habit-header">
+                        <div class="habit-title">🥤 Avoid Single-Use Cups</div>
+                        <div class="points">+8 pts</div>
+                    </div>
+                    <div class="habit-desc">Bring your own cup for coffee/tea purchases</div>
+                    <div style="background: #e8f5e8; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 12px; color: #2e7d32;">
+                        Impact: Saves 1 plastic cup daily = 365 cups/year
+                    </div>
+                </div>
+
+                <div class="habit-card" onclick="selectHabit(this)">
+                    <div class="habit-header">
+                        <div class="habit-title">🌱 Eat Plant-Based Meal</div>
+                        <div class="points">+20 pts</div>
+                    </div>
+                    <div class="habit-desc">Choose one plant-based meal today</div>
+                    <div style="background: #e8f5e8; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 12px; color: #2e7d32;">
+                        Impact: Reduces CO₂ by 0.8kg per meal
+                    </div>
+                </div>
+
+                <div class="habit-card" onclick="selectHabit(this)">
+                    <div class="habit-header">
+                        <div class="habit-title">💡 LED Light Switch</div>
+                        <div class="points">+15 pts</div>
+                    </div>
+                    <div class="habit-desc">Replace one bulb with LED today</div>
+                    <div style="background: #e8f5e8; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 12px; color: #2e7d32;">
+                        Impact: Saves 75% energy compared to incandescent
+                    </div>
+                </div>
+
+                <div class="habit-card" onclick="selectHabit(this)">
+                    <div class="habit-header">
+                        <div class="habit-title">🚶‍♀️ Walk Short Distances</div>
+                        <div class="points">+12 pts</div>
+                    </div>
+                    <div class="habit-desc">Walk or bike for trips under 1km</div>
+                    <div style="background: #e8f5e8; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 12px; color: #2e7d32;">
+                        Impact: Zero emissions + health benefits
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 8: Weekly Progress -->
+        <div class="screen" id="screen8">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>🔋 89%</span>
+            </div>
+            <div class="header">
+                <h1>Weekly Progress</h1>
+                <p>Your eco-impact this week</p>
+            </div>
+            <div class="content">
+                <div class="impact-section">
+                    <div class="impact-title">This Week's Impact</div>
+                    <div class="impact-value">12.4 kg</div>
+                    <div class="impact-desc">CO₂ equivalent saved</div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">85%</div>
+                        <div class="stat-label">Habits Completed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">6/7</div>
+                        <div class="stat-label">Active Days</div>
+                    </div>
+                </div>
+
+                <h3 style="margin: 20px 0 15px; color: #2c3e50;">Daily Breakdown</h3>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: white; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                    <div>
+                        <div style="font-weight: bold; color: #2c3e50;">Monday</div>
+                        <div style="font-size: 12px; color: #7f8c8d;">3/3 habits completed</div>
+                    </div>
+                    <div style="color: #4CAF50; font-size: 18px;">✓</div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: white; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                    <div>
+                        <div style="font-weight: bold; color: #2c3e50;">Tuesday</div>
+                        <div style="font-size: 12px; color: #7f8c8d;">2/3 habits completed</div>
+                    </div>
+                    <div style="color: #ff9800; font-size: 18px;">○</div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: white; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                    <div>
+                        <div style="font-weight: bold; color: #2c3e50;">Wednesday</div>
+                        <div style="font-size: 12px; color: #7f8c8d;">3/3 habits completed</div>
+                    </div>
+                    <div style="color: #4CAF50; font-size: 18px;">✓</div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #4CAF50, #45a049); color: white; padding: 20px; border-radius: 15px; margin-top: 20px; text-align: center;">
+                    <div style="font-size: 16px; margin-bottom: 10px;">🏆 Weekly Challenge</div>
+                    <div style="font-size: 14px; opacity: 0.9;">Complete 20 habits this week!</div>
+                    <div style="background: rgba(255,255,255,0.2); height: 8px; border-radius: 4px; margin: 15px 0 10px;">
+                        <div style="background: white; height: 100%; width: 85%; border-radius: 4px;"></div>
+                    </div>
+                    <div style="font-size: 12px;">17/20 completed</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 9: Community/Social -->
+        <div class="screen" id="screen9">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>🔋 89%</span>
+            </div>
+            <div class="header">
+                <h1>Community</h1>
+                <p>Connect with eco-warriors</p>
+            </div>
+            <div class="content">
+                <div style="background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                    <h3 style="color: #2c3e50; margin-bottom: 15px;">🏆 Leaderboard</h3>
+                    
+                    <div style="display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #ecf0f1;">
+                        <div style="width: 30px; height: 30px; background: #FFD700; border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 12px;">1</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; color: #2c3e50;">EcoSarah</div>
+                            <div style="font-size: 12px; color: #7f8c8d;">1,450 points</div>
+                        </div>
+                        <div style="color: #4CAF50;">👑</div>
+                    </div>
+
+                    <div style="display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #ecf0f1;">
+                        <div style="width: 30px; height: 30px; background: #C0C0C0; border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 12px;">2</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; color: #2c3e50;">GreenGuru</div>
+                            <div style="font-size: 12px; color: #7f8c8d;">1,320 points</div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #ecf0f1;">
+                        <div style="width: 30px; height: 30px; background: #CD7F32; border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 12px;">3</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; color: #2c3e50;">ClimateChamp</div>
+                            <div style="font-size: 12px; color: #7f8c8d;">1,280 points</div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: center; padding: 10px 0; background: #f8f9fa; border-radius: 8px; margin-top: 10px;">
+                        <div style="width: 30px; height: 30px; background: #4CAF50; border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 12px; color: white;">5</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; color: #2c3e50;">You (Alex Green)</div>
+                            <div style="font-size: 12px; color: #7f8c8d;">1,247 points</div>
+                        </div>
+                        <div style="color: #4CAF50;">📈</div>
+                    </div>
+                </div>
+
+                <div style="background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                    <h3 style="color: #2c3e50; margin-bottom: 15px;">🌍 Global Impact</h3>
+                    <div style="text-align: center;">
+                        <div style="font-size: 28px; color: #4CAF50; font-weight: bold;">2,847 kg</div>
+                        <div style="font-size: 14px; color: #7f8c8d; margin-bottom: 15px;">CO₂ saved by all users today</div>
+                        <div style="font-size: 12px; color: #7f8c8d;">That's like planting 35 trees! 🌳</div>
+                    </div>
+                </div>
+
+                <div style="background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                    <h3 style="color: #2c3e50; margin-bottom: 15px;">💬 Recent Activity</h3>
+                    
+                    <div style="padding: 10px 0; border-bottom: 1px solid #ecf0f1;">
+                        <div style="font-weight: bold; color: #2c3e50; font-size: 14px;">EcoSarah completed "Bike to Work" 🚲</div>
+                        <div style="font-size: 12px; color: #7f8c8d;">2 hours ago</div>
+                    </div>
+
+                    <div style="padding: 10px 0; border-bottom: 1px solid #ecf0f1;">
+                        <div style="font-weight: bold; color: #2c3e50; font-size: 14px;">GreenGuru shared a tip about composting 🌱</div>
+                        <div style="font-size: 12px; color: #7f8c8d;">4 hours ago</div>
+                    </div>
+
+                    <div style="padding: 10px 0;">
+                        <div style="font-weight: bold; color: #2c3e50; font-size: 14px;">ClimateChamp started a 30-day zero waste challenge!</div>
+                        <div style="font-size: 12px; color: #7f8c8d;">6 hours ago</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 10: Profile & Achievements -->
+        <div class="screen" id="screen10">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>🔋 89%</span>
+            </div>
+            <div class="header">
+                <h1>Your Profile</h1>
+                <p>Track your green journey</p>
+            </div>
+            <div class="content">
+                <div class="profile-section">
+                    <div class="profile-pic">🌟</div>
+                    <div class="level-badge">Level 3 - Eco Enthusiast</div>
+                    <h3 style="color: #2c3e50; margin-bottom: 10px;">Alex Green</h3>
+                    <p style="color: #7f8c8d; font-size: 14px;">Member since March 2025</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">1,247</div>
+                        <div class="stat-label">Total Points</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">45</div>
+                        <div class="stat-label">Best Streak</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">23.5 kg</div>
+                        <div class="stat-label">CO₂ Saved</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">156 L</div>
+                        <div class="stat-label">Water Saved</div>
+                    </div>
+                </div>
+
+                <h3 style="margin: 20px 0 15px; color: #2c3e50;">Achievements</h3>
+                <div class="achievement-grid">
+                    <div class="achievement">
+                        <div class="achievement-icon">🏆</div>
+                        <div class="achievement-name">First Week</div>
+                    </div>
+                    <div class="achievement">
+                        <div class="achievement-icon">💚</div>
+                        <div class="achievement-name">Eco Warrior</div>
+                    </div>
+                    <div class="achievement">
+                        <div class="achievement-icon">🚲</div>
+                        <div class="achievement-name">Green Commuter</div>
+                    </div>
+                    <div class="achievement">
+                        <div class="achievement-icon">💧</div>
+                        <div class="achievement-name">Water Saver</div>
+                    </div>
+                    <div class="achievement">
+                        <div class="achievement-icon">♻️</div>
+                        <div class="achievement-name">Recycling Pro</div>
+                    </div>
+                    <div class="achievement">
+                        <div class="achievement-icon">🌟</div>
+                        <div class="achievement-name">Consistent</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="nav-btn active" onclick="showScreen(5)">Home</button>
+            <button class="nav-btn" onclick="showScreen(6)">Tips</button>
+            <button class="nav-btn" onclick="showScreen(8)">Progress</button>
+            <button class="nav-btn" onclick="showScreen(9)">Community</button>
+            <button class="nav-btn" onclick="showScreen(10)">Profile</button>
+        </div>
+    </div>
+
+    <script>
+        let currentScreen = 1;
+
+        function showScreen(screenNumber) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Show selected screen
+            document.getElementById(`screen${screenNumber}`).classList.add('active');
+            currentScreen = screenNumber;
+
+            // Update navigation highlighting
+            if (screenNumber >= 5) {
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                if (screenNumber === 5) {
+                    document.querySelector('.nav-btn:nth-child(1)').classList.add('active');
+                } else if (screenNumber === 6) {
+                    document.querySelector('.nav-btn:nth-child(2)').classList.add('active');
+                } else if (screenNumber === 8) {
+                    document.querySelector('.nav-btn:nth-child(3)').classList.add('active');
+                } else if (screenNumber === 9) {
+                    document.querySelector('.nav-btn:nth-child(4)').classList.add('active');
+                } else if (screenNumber === 10) {
+                    document.querySelector('.nav-btn:nth-child(5)').classList.add('active');
+                }
+            }
+        }
+
+        function selectHabit(habitCard) {
+            // Visual feedback for selection
+            habitCard.style.background = 'linear-gradient(135deg, #e8f5e8, #c8e6c9)';
+            habitCard.style.transform = 'scale(0.98)';
+            
+            setTimeout(() => {
+                habitCard.style.transform = 'scale(1)';
+                // Show confirmation and redirect to home
+                alert('Habit added successfully! 🎉');
+                showScreen(5);
+                // Reset background after returning to home
+                setTimeout(() => {
+                    habitCard.style.background = 'white';
+                }, 500);
+            }, 200);
+        }
+
+        function completeHabit(button) {
+            const habitCard = button.closest('.habit-card');
+            const progressBar = habitCard.querySelector('.progress-fill');
+            const actions = habitCard.querySelector('.habit-actions');
+            
+            // Animate progress bar
+            progressBar.style.width = '100%';
+            
+            // Update button
+            setTimeout(() => {
+                actions.innerHTML = '<button class="btn-small btn-done">✓ Completed</button>';
+                
+                // Update stats (simulate)
+                const pointsEl = document.querySelector('.stat-number');
+                let currentPoints = parseInt(pointsEl.textContent);
+                pointsEl.textContent = currentPoints + 15;
+            }, 500);
+        }
+
+        // Auto-advance through onboarding screens (for demo)
+        if (currentScreen <= 4) {
+            setInterval(() => {
+                if (currentScreen <= 4) {
+                    showScreen(currentScreen + 1);
+                }
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
